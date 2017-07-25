@@ -287,28 +287,37 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
   }
 
   update(){
-    this.spritePicker += .2;
+    this.spritePicker += .15;
   }
   render(){
     this.ctx.save();
-    this.ctx.translate(this.xPos + this.width / 2, this.yPos + this.height / 2);
+    this.ctx.translate(this.xPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3
+       / 2, this.yPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
+    );
     this.ctx.scale(this.rotate, 1);
-    this.ctx.translate(-(this.xPos + this.width / 2), -(this.yPos + this.height / 2));
+    this.ctx.translate(-(this.xPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3
+       / 2), -(this.yPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
+    ));
+
      if (this.status === 'moving') {
 
       this.ctx.drawImage(
         this.image,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].x,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].y,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].x,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].y,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height,
         this.xPos,
         this.yPos,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
       );
 
-    } else {
+    } else if (this.status === 'idle'){
 
     this.ctx.drawImage(
       this.image,
@@ -321,25 +330,40 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].width * 3,
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].height * 3
     );
+  } else if (this.status === 'jumping') {
+    this.ctx.drawImage(
+      this.image,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].x,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].y,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].width,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height,
+      this.xPos,
+      this.yPos,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
+    );
+
   }
   this.ctx.restore();
   }
 
   move(direction){
-    this.status = 'moving';
     switch (direction) {
       case 'up':
-        this.yPos -= 1;
+      this.status = 'jumping';
+      this.yPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height * .5;
         break;
       case 'down':
-        this.yPos += 1;
+        this.yPos += 5;
         break;
       case 'left':
       this.rotate = -1;
-        this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
+      this.status = 'moving';
+        this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       case 'right':
-      this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
+      this.status = 'moving';
+      this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       default:
 
@@ -410,10 +434,10 @@ const idleAnimation = {
 
 const movingAnimations = {
   0: {
-    x: 32,
-    y: 92,
-    width: 37,
-    height: 58,
+    x: 38,
+    y: 180,
+    width: 34,
+    height: 48,
   },
   1: {
     x: 77,
@@ -458,7 +482,59 @@ const movingAnimations = {
     height: 52,
   },
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = movingAnimations;
+/* harmony export (immutable) */ __webpack_exports__["c"] = movingAnimations;
+
+const jumpingAnimations = {
+  0: {
+    x: 56,
+    y: 385,
+    width: 37,
+    height: 45,
+  },
+  1: {
+    x: 106,
+    y: 385,
+    width: 41,
+    height: 43,
+  },
+  2: {
+    x: 155,
+    y: 385,
+    width: 38,
+    height: 46,
+  },
+  3: {
+    x: 205,
+    y: 385,
+    width: 28,
+    height: 63,
+  },
+  4: {
+    x: 245,
+    y: 385,
+    width: 31,
+    height: 61,
+  },
+  5: {
+    x: 285,
+    y: 385,
+    width: 30,
+    height: 62,
+  },
+  6: {
+    x: 321,
+    y: 385,
+    width: 31,
+    height: 62,
+  },
+  7: {
+    x: 375,
+    y: 385,
+    width: 38,
+    height: 56,
+  },
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = jumpingAnimations;
 
 
 
