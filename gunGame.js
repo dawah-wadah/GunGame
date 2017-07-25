@@ -77,41 +77,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById('canvas');
   const ctx = canvas.getContext('2d');
-  canvas.width = 700;
+  canvas.width = 1000;
   canvas.height = 736;
   const frames = 0;
   const game = new __WEBPACK_IMPORTED_MODULE_0__game_js__["a" /* default */](canvas, ctx, frames);
   game.start();
-
-  // document.addEventListener('keypress', (e) => {
-  //   console.log(e.keyCode);
-  //   switch (e.keyCode) {
-  //     case 32:
-  //
-  //     switch (game.currentState) {
-  //       case 'Splash':
-  //       game.currentState = 'Running';
-  //       game.bird.jump();
-  //
-  //         break;
-  //       case 'Running':
-  //       game.bird.jump();
-  //
-  //         break;
-  //       case 'GameOver':
-  //       game.currentState = 'Splash';
-  //       game.reset();
-  //         break;
-  //       default:
-  //     }
-  //     break;
-  //     case 112:
-  //     game.pauseGame();
-  //     break;
-  //     default:
-  //     console.log('this is not the key you are looking for');
-  //   }
-  // });
 
 });
 
@@ -200,13 +170,13 @@ class Game {
       if (this.keys[e.keyCode]) {
         this.keys[e.keyCode].down = false;
         this.scott.rotate = 1;
-        this.scott.status = 'idle';
+        // this.scott.status = 'idle';
       }
     });
 
     document.addEventListener('keypress', e => {
       if (e.keyCode === 32) {
-        this.tank.fireBullet();
+        this.scott.move('up');
       }
     });
     this.gameLoop();
@@ -287,28 +257,24 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
     this.gravity = 9.81;
     this.yVel = 0;
     this.termYVel = 8;
+    this.xYvel = 0;
   }
 
   update() {
     this.spritePicker += .15;
-    if (this.yPos + this.height < this.canvas.height - 100) {
-      this.yPos += this.gravity;
+    if (this.yPos + this.height <= this.canvas.height - 100) {
+      if (this.yVel < this.termYVel) {
+
+      this.yVel += this.gravity;
+    }
+    this.yPos += this.yVel;
+    } else {
+      this.yVel = 0;
+      this.status = 'idle';
     }
   }
   render() {
     this.ctx.save();
-    this.ctx.translate(this.xPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3 /
-      2, this.yPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
-    );
-    this.ctx.scale(this.rotate, 1);
-    this.ctx.translate(-(this.xPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3 /
-      2), -(this.yPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
-    ));
-
     let animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
     switch (this.status) {
       case "moving":
@@ -324,6 +290,18 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
         animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
 
     }
+    this.ctx.translate(this.xPos +
+      animation[Math.floor(this.spritePicker % 8)].width * 3 /
+      2, this.yPos +
+      animation[Math.floor(this.spritePicker % 8)].height
+    );
+    this.ctx.scale(this.rotate, 1);
+    this.ctx.translate(-(this.xPos +
+      animation[Math.floor(this.spritePicker % 8)].width * 3 /
+      2), -(this.yPos +
+      animation[Math.floor(this.spritePicker % 8)].height
+    ));
+
     //debugging
 
 
@@ -355,6 +333,7 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
       case 'up':
         this.status = 'jumping';
         // this.yPos -= jumpingAnimations[Math.floor(this.spritePicker % 8)].height * .5;
+        this.yVel -= this.gravity * .15;
         break;
       case 'down':
         this.yPos += 5;
