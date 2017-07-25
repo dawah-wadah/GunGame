@@ -135,7 +135,7 @@ class Game {
     this.soldier = new __WEBPACK_IMPORTED_MODULE_0__soldier_js__["a" /* default */](this.canvas, this.ctx, 40, 40);
     this.scott = new __WEBPACK_IMPORTED_MODULE_1__scott_js__["a" /* default */]({
       xPos: 20,
-      yPos: 30,
+      yPos: canvas.height / 2 - 90,
       width: 50,
       height: 100,
       canvas: this.canvas,
@@ -303,47 +303,34 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
     ));
 
-     if (this.status === 'moving') {
+    let animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
+    switch (this.status) {
+      case "moving":
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */];
+        break;
+      case "idle":
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
+        break;
+      case "jumping":
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */];
+        break;
+      default:
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
+
+    }
 
       this.ctx.drawImage(
         this.image,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].x,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].y,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height,
+        animation[Math.floor(this.spritePicker % 8)].x,
+        animation[Math.floor(this.spritePicker % 8)].y,
+        animation[Math.floor(this.spritePicker % 8)].width,
+        animation[Math.floor(this.spritePicker % 8)].height,
         this.xPos,
         this.yPos,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
-        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
+        animation[Math.floor(this.spritePicker % 8)].width * 3,
+        animation[Math.floor(this.spritePicker % 8)].height * 3
       );
 
-    } else if (this.status === 'idle'){
-
-    this.ctx.drawImage(
-      this.image,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].x,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].y,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].width,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].height,
-      this.xPos,
-      this.yPos,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].width * 3,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].height * 3
-    );
-  } else if (this.status === 'jumping') {
-    this.ctx.drawImage(
-      this.image,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].x,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].y,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].width,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height,
-      this.xPos,
-      this.yPos,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
-    );
-
-  }
   this.ctx.restore();
   }
 
