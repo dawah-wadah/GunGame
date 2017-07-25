@@ -284,22 +284,28 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
     super(options);
     this.status = 'idle';
     this.rotate = 1;
+    this.gravity = 9.81;
+    this.yVel = 0;
+    this.termYVel = 8;
   }
 
-  update(){
+  update() {
     this.spritePicker += .15;
+    if (this.yPos + this.height < this.canvas.height - 100) {
+      this.yPos += this.gravity;
+    }
   }
-  render(){
+  render() {
     this.ctx.save();
     this.ctx.translate(this.xPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3
-       / 2, this.yPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3 /
+      2, this.yPos +
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
     );
     this.ctx.scale(this.rotate, 1);
     this.ctx.translate(-(this.xPos +
-      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3
-       / 2), -(this.yPos +
+      __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3 /
+      2), -(this.yPos +
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height
     ));
 
@@ -318,39 +324,49 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
         animation = __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */];
 
     }
+    //debugging
 
-      this.ctx.drawImage(
-        this.image,
-        animation[Math.floor(this.spritePicker % 8)].x,
-        animation[Math.floor(this.spritePicker % 8)].y,
-        animation[Math.floor(this.spritePicker % 8)].width,
-        animation[Math.floor(this.spritePicker % 8)].height,
-        this.xPos,
-        this.yPos,
-        animation[Math.floor(this.spritePicker % 8)].width * 3,
-        animation[Math.floor(this.spritePicker % 8)].height * 3
-      );
 
-  this.ctx.restore();
+    this.ctx.fillStyle = '#FF0000';
+    this.ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
+
+    this.width = animation[Math.floor(this.spritePicker % 8)].width * 3;
+
+    this.height = animation[Math.floor(this.spritePicker % 8)].height * 3;
+
+
+    this.ctx.drawImage(
+      this.image,
+      animation[Math.floor(this.spritePicker % 8)].x,
+      animation[Math.floor(this.spritePicker % 8)].y,
+      animation[Math.floor(this.spritePicker % 8)].width,
+      animation[Math.floor(this.spritePicker % 8)].height,
+      this.xPos,
+      this.yPos,
+      animation[Math.floor(this.spritePicker % 8)].width * 3,
+      animation[Math.floor(this.spritePicker % 8)].height * 3
+    );
+
+    this.ctx.restore();
   }
 
-  move(direction){
+  move(direction) {
     switch (direction) {
       case 'up':
-      this.status = 'jumping';
-      this.yPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height * .5;
+        this.status = 'jumping';
+        // this.yPos -= jumpingAnimations[Math.floor(this.spritePicker % 8)].height * .5;
         break;
       case 'down':
         this.yPos += 5;
         break;
       case 'left':
-      this.rotate = -1;
-      this.status = 'moving';
+        this.rotate = -1;
+        this.status = 'moving';
         this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       case 'right':
-      this.status = 'moving';
-      this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
+        this.status = 'moving';
+        this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["c" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       default:
 
