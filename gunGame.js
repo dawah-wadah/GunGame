@@ -288,6 +288,22 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
     this.spritePicker += .2;
   }
   render(){
+    if (this.status === 'moving') {
+
+      this.ctx.drawImage(
+        this.image,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].x,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].y,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height,
+        this.xPos,
+        this.yPos,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * 3,
+        __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].height * 3
+      );
+
+    } else {
+
     this.ctx.drawImage(
       this.image,
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].x,
@@ -300,6 +316,7 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].height * 3
     );
   }
+  }
 
   move(direction){
     this.status = 'moving';
@@ -311,10 +328,10 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
         this.yPos += 1;
         break;
       case 'left':
-        this.xPos -= 1;
+        this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       case 'right':
-        this.xPos += 1;
+      this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       default:
 
@@ -381,6 +398,59 @@ const idleAnimation = {
   },
 };
 /* harmony export (immutable) */ __webpack_exports__["a"] = idleAnimation;
+
+
+const movingAnimations = {
+  0: {
+    x: 32,
+    y: 92,
+    width: 37,
+    height: 58,
+  },
+  1: {
+    x: 77,
+    y: 178,
+    width: 42,
+    height: 59,
+  },
+  2: {
+    x: 121,
+    y: 178,
+    width: 52,
+    height: 50,
+  },
+  3: {
+    x: 177,
+    y: 178,
+    width: 46,
+    height: 51,
+  },
+  4: {
+    x: 226,
+    y: 178,
+    width: 40,
+    height: 50,
+  },
+  5: {
+    x: 267,
+    y: 178,
+    width: 42,
+    height: 58,
+  },
+  6: {
+    x: 312,
+    y: 178,
+    width: 50,
+    height: 51,
+  },
+  7: {
+    x: 370,
+    y: 178,
+    width: 46,
+    height: 52,
+  },
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = movingAnimations;
 
 
 
