@@ -199,6 +199,7 @@ class Game {
     document.addEventListener('keyup', e => {
       if (this.keys[e.keyCode]) {
         this.keys[e.keyCode].down = false;
+        this.scott.rotate = 1;
         this.scott.status = 'idle';
       }
     });
@@ -282,13 +283,18 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
   constructor(options) {
     super(options);
     this.status = 'idle';
+    this.rotate = 1;
   }
 
   update(){
     this.spritePicker += .2;
   }
   render(){
-    if (this.status === 'moving') {
+    this.ctx.save();
+    this.ctx.translate(this.xPos + this.width / 2, this.yPos + this.height / 2);
+    this.ctx.scale(this.rotate, 1);
+    this.ctx.translate(-(this.xPos + this.width / 2), -(this.yPos + this.height / 2));
+     if (this.status === 'moving') {
 
       this.ctx.drawImage(
         this.image,
@@ -316,6 +322,7 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
       __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["a" /* idleAnimation */][Math.floor(this.spritePicker % 8)].height * 3
     );
   }
+  this.ctx.restore();
   }
 
   move(direction){
@@ -328,6 +335,7 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
         this.yPos += 1;
         break;
       case 'left':
+      this.rotate = -1;
         this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* movingAnimations */][Math.floor(this.spritePicker % 8)].width * .5;
         break;
       case 'right':
