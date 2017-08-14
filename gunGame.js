@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,8 +68,30 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+class MovingObject {
+  constructor(options) {
+    this.xPos = options.xPos;
+    this.yPos = options.yPos;
+    this.width = options.width;
+    this.height = options.height;
+    this.canvas = options.canvas;
+    this.ctx = options.ctx;
+    this.image = new Image();
+    this.image.src = options.src;
+    this.spritePicker = 0;
+  }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = MovingObject;
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__game_js__ = __webpack_require__(2);
 
 
 
@@ -87,12 +109,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__soldier_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scott_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__soldier_js__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scott_js__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__snake_js__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__guns_js__ = __webpack_require__(8);
+
+
 
 
 
@@ -102,17 +128,27 @@ class Game {
     this.ctx = ctx;
     this.frames = frames;
     this.gameLoop = this.gameLoop.bind(this);
-    this.soldier = new __WEBPACK_IMPORTED_MODULE_0__soldier_js__["a" /* default */](this.canvas, this.ctx, 40, 40);
-    this.scott = new __WEBPACK_IMPORTED_MODULE_1__scott_js__["a" /* default */]({
+    // this.soldier = new Soldier(this.canvas, this.ctx, 40, 40);
+    this.scott = new __WEBPACK_IMPORTED_MODULE_2__snake_js__["a" /* default */]({
       xPos: 20,
       yPos: canvas.height / 2 - 90,
-      width: 50,
-      height: 100,
+      width: 15,
+      height: 23,
       canvas: this.canvas,
       ctx: this.ctx,
-      src: 'res/scott.png',
+      src: 'res/otakon.png',
       spritePicker: 0
     });
+    // this.gun = new Gun({
+    //   xPos: this.scott.xPos,
+    //   yPos: this.scott.yPos,
+    //   width: 50,
+    //   height: 100,
+    //   canvas: this.canvas,
+    //   ctx: this.ctx,
+    //   src: 'res/guns.png',
+    //   spritePicker: 0
+    // });
     this.keys = {
       37: {
         down: false,
@@ -197,9 +233,11 @@ class Game {
     this.frames++;
     // this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this.scott.update();
+    // this.gun.update();
     this.update();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.scott.render();
+    // this.gun.render();
     this.gameID = window.requestAnimationFrame(this.gameLoop);
   }
 }
@@ -208,7 +246,7 @@ class Game {
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -235,16 +273,16 @@ class Soldier {
   }
 }
 
-/* harmony default export */ __webpack_exports__["a"] = (Soldier);
+/* unused harmony default export */ var _unused_webpack_default_export = (Soldier);
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__ = __webpack_require__(0);
 
 
 
@@ -304,9 +342,9 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
 
     //debugging
 
-
-    this.ctx.fillStyle = '#FF0000';
-    this.ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
+    //
+    // this.ctx.fillStyle = '#FF0000';
+    // this.ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
 
     this.width = animation[Math.floor(this.spritePicker % 8)].width * 3;
 
@@ -332,7 +370,7 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
     switch (direction) {
       case 'up':
         this.status = 'jumping';
-        // this.yPos -= jumpingAnimations[Math.floor(this.spritePicker % 8)].height * .5;
+        this.yPos -= __WEBPACK_IMPORTED_MODULE_0__animations_scottAnimations_js__["b" /* jumpingAnimations */][Math.floor(this.spritePicker % 8)].height * .5;
         this.yVel -= this.gravity * .15;
         break;
       case 'down':
@@ -352,12 +390,12 @@ class Scott extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* defa
     }
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Scott;
+/* unused harmony export default */
 
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -521,24 +559,262 @@ const jumpingAnimations = {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class MovingObject {
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__ = __webpack_require__(0);
+
+
+
+class Snake extends __WEBPACK_IMPORTED_MODULE_1__moving_objects_js__["a" /* default */] {
   constructor(options) {
-    this.xPos = options.xPos;
-    this.yPos = options.yPos;
-    this.width = options.width;
-    this.height = options.height;
-    this.canvas = options.canvas;
-    this.ctx = options.ctx;
-    this.image = new Image();
-    this.image.src = options.src;
-    this.spritePicker = 0;
+    super(options);
+    this.direction = 'down';
+    this.status = 'idle';
+
+    this.gravity = 9.81;
+
+    this.yVel = 0;
+
+    this.termYVel = 8;
+
+    this.xYvel = 0;
+
+  }
+
+  update() {
+    this.spritePicker += .05;
+  }
+
+  render() {
+    this.ctx.save();
+    let animation = __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].down;
+    switch (this.direction) {
+      case 'up':
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].up;
+        break;
+      case 'down':
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].down;
+        break;
+      case 'left':
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].left;
+        break;
+      case 'right':
+        animation = __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].right;
+        break;
+      default:
+
+    }
+    // //debugging
+    //
+    // //
+    // this.ctx.fillStyle = '#FF0000';
+    // this.ctx.fillRect(this.xPos, this.yPos, this.width, this.height);
+
+    this.width = animation[Math.floor(this.spritePicker % 3)].width * 3;
+
+    this.height = animation[Math.floor(this.spritePicker % 3)].height * 3;
+
+
+    this.ctx.drawImage(
+      this.image,
+      animation[Math.floor(this.spritePicker % 3)].x,
+      animation[Math.floor(this.spritePicker % 3)].y,
+      animation[Math.floor(this.spritePicker % 3)].width,
+      animation[Math.floor(this.spritePicker % 3)].height,
+      this.xPos,
+      this.yPos,
+      animation[Math.floor(this.spritePicker % 3)].width * 3,
+      animation[Math.floor(this.spritePicker % 3)].height * 3
+    );
+
+    this.ctx.restore();
+  }
+
+  move(direction) {
+    this.spritePicker += .20;
+    switch (direction) {
+      case 'up':
+        this.direction = 'up';
+        this.yPos -= __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].up[Math.floor(this.spritePicker % 3)].height * .5;
+        break;
+      case 'down':
+        this.direction = 'down';
+        this.yPos += 5;
+        break;
+      case 'left':
+        this.direction = 'left';
+        this.xPos -= __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].left[Math.floor(this.spritePicker % 3)].width * .5;
+        break;
+      case 'right':
+        this.direction = 'right';
+        this.xPos += __WEBPACK_IMPORTED_MODULE_0__animations_mkAnimations_js__["a" /* mkAnimations */].right[Math.floor(this.spritePicker % 3)].width * .5;
+        break;
+      default:
+
+    }
   }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = MovingObject;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Snake;
+;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const mkAnimations = {
+  down: {
+    0: {
+      x: 293,
+      y: 8,
+      width: 17,
+      height: 22
+    },
+    1: {
+      x: 325,
+      y: 8,
+      width: 17,
+      height: 22
+
+    },
+    2: {
+      x: 357,
+      y: 8,
+      width: 17,
+      height: 22
+    }
+  },
+  left: {
+    0: {
+      x: 297,
+      y: 42,
+      width: 14,
+      height: 22
+    },
+    1: {
+      x: 329,
+      y: 41,
+      width: 14,
+      height: 23
+
+    },
+    2: {
+      x: 361,
+      y: 42,
+      width: 14,
+      height: 22
+    }
+  },
+  right: {
+    0: {
+      x: 297,
+      y: 74,
+      width: 14,
+      height: 22
+    },
+    1: {
+      x: 329,
+      y: 73,
+      width: 14,
+      height: 23
+
+    },
+    2: {
+      x: 361,
+      y: 74,
+      width: 14,
+      height: 22
+    }
+  },
+  up: {
+    0: {
+      x: 298,
+      y: 104,
+      width: 17,
+      height: 22
+    },
+    1: {
+      x: 329,
+      y: 104,
+      width: 17,
+      height: 23
+
+    },
+    2: {
+      x: 362,
+      y: 104,
+      width: 17,
+      height: 22
+    }
+  }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = mkAnimations;
+
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__moving_objects__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__ = __webpack_require__(9);
+
+
+
+
+class Gun extends __WEBPACK_IMPORTED_MODULE_0__moving_objects__["a" /* default */] {
+  constructor(options) {
+    super(options);
+  }
+
+
+  update(){
+
+  }
+
+  render(){
+    this.ctx.drawImage(
+      this.image,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.x,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.y,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.width,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.height,
+      this.xPos,
+      this.yPos,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.width * 1,
+      __WEBPACK_IMPORTED_MODULE_1__animations_gunsSprites_js__["a" /* gunSprites */].pistol.height * 1
+    );
+  }
+}
+
+/* unused harmony default export */ var _unused_webpack_default_export = (Gun);
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+const gunSprites = {
+  pistol: {
+    x: 39,
+    y: 49,
+    width: 95,
+    height: 61,
+  },
+  machineGun: {
+    x: 120,
+    y: 258,
+    width: 380,
+    height: 122
+  }
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = gunSprites;
 
 
 
